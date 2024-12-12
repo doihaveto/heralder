@@ -1,0 +1,67 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="container">
+    <h1>User Management</h1>
+    {% include "flash_messages.html" %}
+    <form method="post" class="form">
+        <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+        <h2>Add New User</h2>
+        <div>
+            <label for="new_username">Username:</label>
+            <input type="text" id="new_username" name="username" required>
+        </div>
+        <div>
+            <label for="new_password">Password:</label>
+            <input type="password" id="new_password" name="password" required>
+        </div>
+        <div class="form-check">
+            <input type="checkbox" class="form-check-input" id="new_superuser" name="superuser">
+            <label for="new_superuser">Superuser</label>
+        </div>
+        <button type="submit" name="action" value="add_user">Add User</button>
+    </form>
+
+    <h2>Change Password</h2>
+    <form method="post" class="form">
+        <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+        <div>
+            <label for="change_username">Username:</label>
+            <input type="text" id="change_username" name="username" required>
+        </div>
+        <div>
+            <label for="new_password">New Password:</label>
+            <input type="password" id="new_password" name="new_password" required>
+        </div>
+        <button type="submit" name="action" value="change_password">Change Password</button>
+    </form>
+
+    <h2>Delete User</h2>
+    <form method="post" class="form">
+        <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+        <div>
+            <label for="delete_username">Username:</label>
+            <input type="text" id="delete_username" name="username" required>
+        </div>
+        <button type="submit" name="action" value="delete_user">Delete User</button>
+    </form>
+
+    <table>
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>Username</th>
+                <th>Superuser</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for user in users %}
+            <tr>
+                <td>{{ user.id }}</td>
+                <td>{{ user.username }}</td>
+                <td>{{ 'Yes' if user.is_superuser else 'No' }}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% endblock %}

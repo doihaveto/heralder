@@ -1,0 +1,38 @@
+<div>
+    <p>Showing {{ page.start_idx + 1 }} - {{ page.end_idx }} out of {{ page.total_items }} items</p>
+    <div>
+        <ul class="pagination">
+            {% if page.page > 1 %}
+            <li class="page-item">
+                <a class="page-link" href="?page={{ page.page - 1 }}">
+                    <span>&laquo;</span>
+                </a>
+            </li>
+            {% else %}
+            <li class="page-item disabled">
+                <span class="page-link">&laquo;</span>
+            </li>
+            {% endif %}
+            {% set start_page = page.page - 3 %}
+            {% set end_page = page.page + 3 %}
+            {% set start_page = 1 if start_page < 1 else start_page %}
+            {% set end_page = ((page.total_items + page.per_page - 1) // page.per_page) if end_page > ((page.total_items + page.per_page - 1) // page.per_page) else end_page %}
+            {% for p in range(start_page, end_page + 1) %}
+            <li class="page-item {% if p == page.page %}active{% endif %}">
+                <a class="page-link" href="?page={{ p }}">{{ p }}</a>
+            </li>
+            {% endfor %}
+            {% if page.page < (page.total_items + page.per_page - 1) // page.per_page %}
+            <li class="page-item">
+                <a class="page-link" href="?page={{ page.page + 1 }}">
+                    <span>&raquo;</span>
+                </a>
+            </li>
+            {% else %}
+            <li class="page-item disabled">
+                <span class="page-link">&raquo;</span>
+            </li>
+            {% endif %}
+        </ul>
+    </div>
+</div>

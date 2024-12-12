@@ -1,0 +1,36 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="container">
+    <h1>Manage providers</h1>
+    {% include "flash_messages.html" %}
+    {% if providers %}
+    <div class="box-container">
+    {% for provider in providers %}
+        <div class="box">
+            <a href="{{ url_for('manage_provider', provider_id=provider.id) }}">{{ provider.get_name() }}</a>
+        </div>
+    {% endfor %}
+    </div>
+    {% endif %}
+    <h2>Add provider</h2>
+    <form method="post">
+        <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+        <div>
+            <label for="name">Name:</label>
+            <input type="text" name="name" placeholder="Leave empty for default name"><br>
+        </div>
+        <div>
+            <label for="provider">Provider:</label>
+            <select name="provider" required>
+                <option value="">----</option>
+                {% for provider_type, provider_type_data in settings_options.items() %}
+                <option value="{{ provider_type }}">{{ provider_type_data['name'] }}</option>
+                {% endfor %}
+            </select>
+        </div>
+        <div>
+            <button type="submit" class="mt-1">Add Provider</button>
+        </div>
+    </form>
+</div>
+{% endblock %}

@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html>
+<head>
+    {% block title %}
+    <title>Heralder</title>
+    {% endblock %}
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{{ url_for('static', filename='base.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='main.css') }}">
+    {% if current_user.id %}
+    <script src="{{ url_for('static', filename='main.js') }}"></script>
+    <link href="{{ url_for('static', filename='fonts.css') }}" rel="stylesheet">
+    <link rel="icon" type="image/png" href="{{ url_for('static', filename='icon128.png') }}">
+    {% endif %}
+{% block head %}
+{% endblock %}
+</head>
+<body>
+    {% if current_user.id %}
+    <nav>
+        <div>
+            <a href="{{ url_for('item_add') }}">Add item</a>
+            <a href="{{ url_for('list_items') }}">Items</a>
+            <a href="{{ url_for('list_feed_items') }}">Feed</a>
+        </div>
+        <div>
+            <h3><a href="{{ url_for('index') }}">Heralder</a></h3>
+        </div>
+        <div>
+            {% if current_user.is_superuser %}
+            <a href="{{ url_for('dashboard') }}">Dashboard</a>
+            {% endif %}
+            <a href="{{ url_for('users.logout') }}">Logout</a>
+            <a href="{{ url_for('index') }}">Welcome, {{ current_user.username }}</a>
+        </div>
+        </ul>
+    </nav>
+    {% endif %}
+    <div class="content">
+        {% block content %}
+        {% include "flash_messages.html" %}
+        <h2>Welcome to Heralder!</h2>
+        <p><strong>Project page:</strong> <a href="https://github.com/doihaveto/heralder">https://github.com/doihaveto/heralder</a></p>
+        <p><strong>Chrome/Firefox addon:</strong> <a href="https://chromewebstore.google.com/detail/heralder/cigolcfopdjdeddijcnobgfddbfdkkhh">Chrome web store</a> or <a href="https://github.com/doihaveto/heralder-browser-addon">Github</a></p>
+        <p>Currently supported text-to-speech providers:</p>
+        <ul>
+            <li><strong>- Microsoft Edge</strong> - default provider, free.</li>
+            <li><strong>- Amazon Polly</strong> - free tier with limited monthly quota - <strong>*recommended*</strong></li>
+            <li><strong>- Google TTS</strong> - free tier with limited monthly quota.</li>
+        </ul>
+        {% endblock %}
+    </div>
+    <div id="audio-player" class="hidden">
+        <div class="audio-player">
+            <button id="play-pause-btn">Play</button>
+            <button id="back-btn">-10s</button>
+            <span id="current-time">0:00</span>
+            <div class="progress-container">
+                <div id="buffered-bar" class="buffered-bar"></div>
+                <div id="progress-bar" class="progress-bar"></div>
+            </div>
+            <span id="time-left">0:00</span>
+            <button id="forward-btn">+15s</button>
+            <div class="custom-slider" id="volume-slider-container">
+            <div id="volume-slider-fill" class="slider-fill"></div>
+            </div>
+            <button id="mute-btn">Mute</button>
+            <div class="custom-slider" id="speed-slider-container">
+                <div id="speed-slider-fill" class="slider-fill"></div>
+            </div>
+            <span id="speed-display">1x</span>
+        </div>
+        <audio id="audio"></audio>
+    </div>
+{% block scripts %}
+{% endblock %}
+</body>
+</html>

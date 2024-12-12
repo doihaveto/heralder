@@ -1,0 +1,306 @@
+@font-face {
+  font-family: 'Material Symbols Outlined';
+  font-style: normal;
+  font-weight: 400;
+  src: url(/static/materials.woff2) format('woff2');
+}
+
+.material-symbols-outlined {
+  font-family: 'Material Symbols Outlined';
+  font-weight: normal;
+  font-style: normal;
+  font-size: 24px;
+  line-height: 1;
+  letter-spacing: normal;
+  text-transform: none;
+  display: inline-block;
+  white-space: nowrap;
+  word-wrap: normal;
+  direction: ltr;
+  -webkit-font-feature-settings: 'liga';
+  -webkit-font-smoothing: antialiased;
+}
+
+.material-symbols-outlined.small {
+  font-size: 12px;
+}
+
+.pointer {
+  cursor: pointer;
+}
+
+body {
+  font-family: Tahoma;
+  font-size: 13px;
+  background-color: #F2EAD0;
+  color: #333333;
+  margin: 0;
+  padding: 0;
+}
+
+nav {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px;
+  background-color: #e3d8b8;
+  border-bottom: 1px solid #c4b793;
+}
+
+nav a {
+  margin-right: 20px;
+  color: #333333;
+  text-decoration: none;
+}
+
+nav span {
+  color: #333333;
+}
+
+.content {
+  max-width: 1200px;
+  margin: 20px auto;
+  padding: 20px;
+  background-color: #ECE2C6;
+  border-radius: 5px;
+}
+
+.content h1 {
+  font-size: 24px;
+}
+
+.content a {
+  color: #336699;
+  text-decoration: none;
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+  background-color: #ECE2C6;
+  margin-bottom: 20px;
+}
+
+th, td {
+  padding: 10px;
+  text-align: left;
+  vertical-align: middle;
+  border-bottom: 1px solid #CCCCCC;
+}
+
+th {
+  background-color: #e3d8b8;
+  font-weight: bold;
+}
+
+tr:hover {
+  background-color: #F2EAD0;
+}
+
+input[type="text"],
+input[type="number"],
+input[type="password"],
+select {
+  width: 200px;
+  padding: 5px;
+  border: 0px solid #636363;
+  border-bottom-width: 1px;
+  background: transparent;
+}
+
+input[type="text"]:focus,
+input[type="number"]:focus,
+input[type="password"]:focus {
+  outline: none;
+}
+
+button, .btn {
+  background-color: #D9C7A7;
+  border: none;
+  color: #333;
+  cursor: pointer;
+  font-size: inherit;
+  padding: 8px 20px;
+}
+
+button > div, .btn > div {
+  display: flex;
+  align-items: center;
+}
+
+a.btn {
+  display: inline-block;
+  text-align: center;
+  color: #333;
+}
+
+.unicode-icon {
+  line-height: 0;
+  font-size: 15px;
+}
+
+button.unicode-icon {
+  padding: 0 5px;
+}
+
+.unicode-icon.large {
+  font-size: 21px;
+}
+
+textarea {
+  border-left: 0;
+  border-right: 0;
+  border-top: 0;
+  background: transparent;
+}
+
+ul {
+  padding-right: 20px;
+}
+
+ul li {
+  list-style-type: none;
+}
+
+.hidden {
+  display: none;
+}
+
+.w-100 {
+  width: 100%;
+  padding-right: 0;
+  padding-left: 0;
+}
+
+.mt-1 {
+  margin-top: 10px;
+}
+
+.mr-1 {
+  margin-right: 10px;
+}
+
+button.no-btn {
+  vertical-align: bottom;
+  background: none;
+  padding: 0;
+}
+
+@media screen and (max-width: 767px) {
+  .content {
+    padding: 10px;
+  }
+
+  input[type="text"],
+  input[type="number"],
+  input[type="password"],
+  select {
+    width: 98%;
+    padding: 5px;
+    margin-bottom: 10px;
+  }
+
+  table {
+    overflow-x: auto;
+    display: block;
+    width: 100%;
+  }
+
+  th, td {
+    padding-right: 6px;
+  }
+
+  nav ul {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    padding: 0;
+    margin: 0;
+  }
+  
+  nav li {
+    flex: 0 0 auto;
+    margin: 15px;
+    white-space: nowrap;
+    overflow: hidden;
+  }
+  
+  nav li:nth-last-child(2) {
+    order: 1;
+  }
+  
+  nav li a {
+    display: block;
+    background-color: #CCCCCC;
+    color: #333333;
+    border-radius: 5px;
+    text-decoration: none;
+    font-size: 14px;
+    text-overflow: ellipsis;
+    overflow: hidden;
+    white-space: nowrap;
+  }
+}
+
+.pagination {
+  display: flex;
+  list-style: none;
+  padding-left: 0;
+}
+
+.pagination .page-item {
+  background-color: #e3d8b8;
+}
+
+.pagination .page-link {
+  display: block;
+  padding: 4px 10px;
+  color: #000;
+  text-decoration: none;
+  border: 1px solid #ece2c6;
+  border-radius: 4px;
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+.pagination .page-link:hover {
+  background-color: #f2ead0;
+  color: #000;
+}
+
+.pagination .page-item.active .page-link {
+  color: #000;
+  background-color: #e3d8b8;
+}
+
+.pagination .page-item.disabled .page-link {
+  color: #6c757d;
+  pointer-events: none;
+  background-color: #e0d6bb;
+  border-color: #e6dbb9;
+}
+
+.flex {
+  display: flex;
+}
+
+.space-between {
+  justify-content: space-between;
+}
+
+.bg-alert {
+  background: #ba989880;
+}
+
+.box-container {
+  display: flex;
+}
+
+.box {
+  margin-top: 10px;
+  padding: 10px;
+  background-color: #e3d8b8;
+}
+
+.box-container .box {
+  margin-right: 10px;
+}

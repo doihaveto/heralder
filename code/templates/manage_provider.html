@@ -1,0 +1,109 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="container">
+    <h1>Manage provider</h1>
+    {% include "flash_messages.html" %}
+    <div class="provider-container">
+        <form method="post">
+            <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+            <input type="hidden" name="action" value="edit">
+            <input type="hidden" name="provider_id" value="{{ provider.id }}">
+            <div>
+                <label for="name">Name:</label>
+                <input type="text" name="name" value="{{ provider.name }}" placeholder="Leave empty for default name">
+            </div>
+            {% with parsed_settings=provider.parsed_settings() %}
+            {% if provider.provider == 'polly' %}
+            <div class="settings" data-provider="polly">
+                <div>
+                    <label>AWS secret key</label>
+                    <input type="text" name="aws_secret_key" placeholder="" required value="{{ parsed_settings.get('aws_secret_key', '') }}">
+                </div>
+                <div>
+                    <label>AWS access key</label>
+                    <input type="text" name="aws_access_key" placeholder="" required value="{{ parsed_settings.get('aws_access_key', '') }}">
+                </div>
+                <div>
+                    <label>Region name</label>
+                    <input type="text" name="region_name" placeholder="" required value="{{ parsed_settings.get('region_name', '') }}">
+                </div>
+                <div>
+                    <label>S3 bucket name</label>
+                    <input type="text" name="s3_bucket_name" placeholder="Leave empty to self-generate" value="{{ parsed_settings.get('s3_bucket_name', '') }}">
+                </div>
+                <div>
+                    <label>Allow exceeding free-tier quotas</label>
+                    <input type="checkbox" name="exceed_quotas" {% if provider.exceed_quotas %}checked{% endif %}>
+                </div>
+            </div>
+            {% elif provider.provider == 'google-tts' %}
+            <div class="settings" data-provider="google-tts">
+                <div>
+                    <label>Credentials</label>
+                    <input type="text" name="credentials" placeholder="" required value="{{ parsed_settings.get('credentials', '') }}">
+                </div>
+                <div>
+                    <label>Bucket name</label>
+                    <input type="text" name="bucket_name" placeholder="Leave empty to self-generate" value="{{ parsed_settings.get('bucket_name', '') }}">
+                </div>
+                <div>
+                    <label>Bucket region</label>
+                    <input type="text" name="bucket_region" value="{{ parsed_settings.get('bucket_region', '') }}"> <span>Leave empty for europe-west4 or if the bucket was already created</span>
+                </div>
+                <div>
+                    <label>Allow exceeding free-tier quotas</label>
+                    <input type="checkbox" name="exceed_quotas" {% if provider.exceed_quotas %}checked{% endif %}>
+                </div>
+            </div>
+            <div>
+                <p><strong>How to enable Google TTS:</strong></p>
+                <ul>
+                    <li>1. Enable <a href="https://console.cloud.google.com/marketplace/product/google/texttospeech.googleapis.com" target="_blank">Cloud Text-to-Speech API</a> in your Google Cloud console.</li>
+                    <li>2. In the manage page for that API, open the "credentials" tab, click "create credentials" and "service account".</li>
+                    <li>3. Under "Grant this service account access to project", select "Cloud Storage", "Storage Admin", and continue to create the account.</li>
+                    <li>4. Click the newly created service account, go to the "keys" tab, click "add key", "create new key", select "json", and click "create".</li>
+                    <li>5. Open the downloaded credentials file and paste its contents in this page.</li>
+                </ul>
+            </div>
+            {% endif %}
+            {% endwith %}
+            <div>
+                <button type="submit" class="mt-1">Save</button>
+            </div>
+        </form>
+        <form method="post">
+            <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+            <input type="hidden" name="action" value="delete">
+            <input type="hidden" name="provider_id" value="{{ provider.id }}">
+            <button type="submit" class="mt-1 bg-alert">Delete</button>
+        </form>
+    </div>
+</div>
+{% endblock %}
+{% block scripts %}
+<script>
+function updateSettingsForm(providerEl) {
+    const settingsDiv = providerEl.querySelector('.settings-container');
+    const provider = providerEl.querySelector('.provider').value;
+    const settingsTemplate = document.querySelector(`.settings[data-provider='${provider}']`);
+    settingsDiv.innerHTML = '';
+    if (settingsTemplate)
+        settingsDiv.innerHTML = settingsTemplate.innerHTML;
+    if (settingsDiv.getAttribute('data-settings')) {
+        const providerSettings = JSON.parse(settingsDiv.getAttribute('data-settings'))
+        settingsDiv.querySelectorAll('input').forEach(input => {
+            const name = input.getAttribute('name');
+            if (name in providerSettings)
+                input.value = providerSettings[name];
+        });
+    }
+}
+
+document.querySelectorAll('.provider').forEach(el => {
+    const container = el.closest('.provider-container');
+    el.addEventListener('change', () => updateSettingsForm(container));
+    updateSettingsForm(container);
+});
+
+</script>
+{% endblock %}

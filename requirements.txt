@@ -1,0 +1,15 @@
+redis
+celery
+edge-tts
+click
+flask
+flask_login
+gunicorn
+sqlalchemy
+flask-sqlalchemy
+flask-migrate
+Flask-WTF
+pydub
+boto3
+google-cloud-texttospeech
+google-cloud-storage

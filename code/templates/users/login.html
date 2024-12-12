@@ -1,0 +1,22 @@
+{% extends 'base.html' %}
+{% block content %}
+    {% include "flash_messages.html" %}
+    <h2>Login</h2>
+    {% if error %}
+        <p>{{ error }}</p>
+    {% endif %}
+    <form class="form" method="POST" action="{{ url_for('users.login') }}">
+        <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+        <div>
+            <label for="username">Username:</label>
+            <input type="text" id="username" name="username" required>
+        </div>
+        <div>
+            <label for="password">Password:</label>
+            <input type="password" id="password" name="password" required>
+        </div>
+        <p>
+            <button type="submit">Submit</button>
+        </p>
+    </form>
+{% endblock %}

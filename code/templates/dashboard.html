@@ -1,0 +1,14 @@
+{% extends "base.html" %}
+{% block title %}
+    <title>Dashboard - Heralder</title>
+{% endblock %}
+{% block content %}
+<div class="container">
+    {% include "flash_messages.html" %}
+    <h1>Dashboard</h1>
+    <ul>
+        <li><a href="{{ url_for('users.user_management') }}"><h3>Users</h3></a></li>
+        <li><a href="{{ url_for('list_providers') }}"><h3>Providers</h3></a></li>
+    </ul>
+</div>
+{% endblock %}

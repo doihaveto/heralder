@@ -1,0 +1,100 @@
+{% extends "base.html" %}
+{% block title %}
+    {% if request.endpoint == 'list_items' %}
+    <title>Items - Heralder</title>
+    {% else %}
+    <title>Feed - Heralder</title>
+    {% endif %}
+{% endblock %}
+{% block content %}
+<div class="container">
+    {% include "flash_messages.html" %}
+    {% if request.endpoint == 'list_items' %}
+    <h1>Items</h1>
+    {% else %}
+    <h1>Feed</h1>
+    <div class="box">
+        <span class="material-symbols-outlined small">rss_feed</span> <strong>RSS:</strong> <a href="{{ url_for('user_rss', user_id=current_user.id, key=rss_key) }}">{{ url }}{{ url_for('user_rss', user_id=current_user.id, key=rss_key) }}</a>
+    </div>
+    {% endif %}
+    {% include 'pagination.html' %}
+    <div>
+        <table>
+            <thead>
+                <tr>
+                    <th></th>
+                    <th>Title</th>
+                    <th>Author</th>
+                    <th>URL</th>
+                    <th>Duration</th>
+                    <th>Published</th>
+                    <th>Created</th>
+                    <th>Created by</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for item in items %}
+                <tr>
+                    <td>
+                        <button type="button" data-in-feed="{{ item.id in feed_item_ids }}" data-item-id="{{ item.id }}" class="feed-toggle no-btn">
+                            <span class="material-symbols-outlined">
+                            {% if item.id in feed_item_ids %}bookmark_remove{% else %}bookmark_add{% endif %}
+                            </span>
+                        </button>
+                    </td>
+                    <td><a href="{{ url_for('item_view', item_id=item.id) }}">{{ item.title }}</a></td>
+                    <td>{{ item.author or '' }}</td>
+                    <td>{% if item.url %}<a href="{{ item.url }}" target="_blank">{{ item.url|truncate(30, True) }}</a>{% endif %}</td>
+                    <td>{{ item.duration_formatted() }}</td>
+                    <td>{% if item.published_date %}{{ item.published_date.strftime('%Y-%m-%d') }}{% endif %}</td>
+                    <td>{{ item.created_date.strftime('%Y-%m-%d') }}</td>
+                    <td>{{ item.user.username }}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+{% endblock %}
+{% block scripts %}
+<script>
+const csrf_token = '{{ csrf_token() }}';
+
+document.querySelectorAll('.feed-toggle').forEach(button => {
+    button.addEventListener('click', () => {
+        const itemId = button.getAttribute('data-item-id');
+        const inFeed = button.getAttribute('data-in-feed').toLowerCase() === 'true';
+        const action = inFeed ? 'remove' : 'add';
+
+        fetch('/feed/item', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                csrf_token: csrf_token,
+                item_id: itemId,
+                action: action,
+            })
+        })
+        .then(response => {
+            if (response.status === 200) {
+                // Toggle data-in-feed attribute
+                button.setAttribute('data-in-feed', !inFeed);
+
+                // Update icon based on action
+                const icon = button.querySelector('.material-symbols-outlined');
+                icon.textContent = action === 'add' ? 'bookmark_remove' : 'bookmark_add';
+            } else {
+                console.error('Failed to update feed item:', response.statusText);
+                alert('Error updating feed item');
+            }
+        })
+        .catch(error => {
+            console.error('Error:', error);
+            alert('Error updating feed item');
+        });
+    });
+});
+</script>
+{% endblock %}
