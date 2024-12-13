@@ -11,7 +11,7 @@ DATA_DIR = os.environ.get('DATA_DIR', '/data')
 FILES_DIR = os.path.join(DATA_DIR, 'files')
 SAMPLES_DIR = os.path.join(FILES_DIR, 'samples')
 LOGS_DIR = os.path.join(DATA_DIR, 'logs')
-URL = os.environ.get('URL', 'http://localhost:5097')
+URL = os.environ.get('URL', 'http://localhost:6468')
 MEDIA_URL = '/media/'
 DB_URI = 'sqlite:////data/app.db'
 
