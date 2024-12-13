@@ -16,6 +16,8 @@ if ! id -u $USER_ID > /dev/null 2>&1; then
     useradd -u $USER_ID -g $GROUP_ID -s /bin/bash -m tts
 fi
 
+mkdir -p /data
+
 # Change the ownership of /data
 chown -R $USER_ID:$GROUP_ID /data
 
