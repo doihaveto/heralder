@@ -52,7 +52,7 @@ def index():
         )
         db.session.add(new_provider)
         db.session.commit()
-        tts_provider = provider.get_provider_instance()
+        tts_provider = new_provider.get_provider_instance()
         try:
             tts_provider.setup()
         except:
