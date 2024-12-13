@@ -45,6 +45,18 @@ csrf.init_app(app)
 @app.route('/')
 @login_required
 def index():
+    if not Provider.query.count():
+        new_provider = Provider(
+            name='Edge',
+            provider='edge',
+        )
+        db.session.add(new_provider)
+        db.session.commit()
+        tts_provider = provider.get_provider_instance()
+        try:
+            tts_provider.setup()
+        except:
+            pass
     return render_template('base.html')
 
 @app.route('/dashboard/')
@@ -395,16 +407,4 @@ def api_ext_submit_item():
     return redirect(url_for('item_add') + f'?cache={cache_hash}')
 
 if __name__ == '__main__':
-    if not Provider.query.count():
-        new_provider = Provider(
-            name='Edge',
-            provider='edge',
-        )
-        db.session.add(new_provider)
-        db.session.commit()
-        tts_provider = provider.get_provider_instance()
-        try:
-            tts_provider.setup()
-        except:
-            pass
     app.run(debug=False)
