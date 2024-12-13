@@ -24,11 +24,11 @@ services:
     environment:
       - PUID=1000
       - PGID=1000
-      - URL=http://localhost:5097
+      - URL=http://localhost:8000
     volumes:
       - ./heralder/data:/data
     ports:
-      - 5097:5097
+      - 8000:6468
     depends_on:
       - redis
     restart: unless-stopped 
@@ -44,7 +44,7 @@ services:
 | -------------- | ---------------------------------------------------------------------------- | --------------------- |
 | PUID           | User id to run as (run `id $user` to get your current user's id)             | -                     |
 | PGID           | User group id to run as (run `id $user` to get your current user's group id) | -                     |
-| URL            | URL that Heralder will be accessed from                                      | http://localhost:5097 |
+| URL            | URL that Heralder will be accessed from                                      | http://localhost:6468 |
 | REDIS_HOSTNAME | Redis hostname                                                               | redis                 |
 | REDIS_PORT     | Redis port                                                                   | 6379                  |
 | REDIS_DB       | Redis database                                                               | 0                     |
